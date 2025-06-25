@@ -1,6 +1,5 @@
 /**
  * 🃏 HISOKA-MD - WhatsApp Bot
- * Inspired by Levanter
  * Created with Bailey library
  */
 
@@ -10,7 +9,6 @@ import {
   useMultiFileAuthState,
   fetchLatestBaileysVersion,
 } from "@whiskeysockets/baileys"
-import { Boom } from "@hapi/boom"
 import pino from "pino"
 import chalk from "chalk"
 import { generatePairingCode, displaySessionSuccess, generateSessionId } from "./lib/auth.js"
@@ -72,7 +70,7 @@ async function startHisokaMD() {
     const { connection, lastDisconnect } = update
 
     if (connection === "close") {
-      const shouldReconnect = (lastDisconnect?.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut
+      const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
 
       logger.info("Connection closed due to", lastDisconnect?.error, ", reconnecting", shouldReconnect)
 
