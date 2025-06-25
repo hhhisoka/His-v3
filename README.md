@@ -3,10 +3,10 @@
 <div align="center">
   <img src="https://i.imgur.com/hisoka-banner.png" alt="HISOKA-MD" width="300"/>
   
-  [![GitHub stars](https://img.shields.io/github/stars/hhhisoka/his-md-v0?style=social)](https://github.com/hhhisoka/his-md-v0)
-  [![WhatsApp Channel](https://img.shields.io/badge/WhatsApp-Channel-25D366?style=flat&logo=whatsapp)](https://whatsapp.com/channel/0029VagQEmB002T7MWo3Sj1D)
+  [![GitHub stars](https://img.shields.io/github/stars/hhhisoka/His-v3?style=social)](https://github.com/hhhisoka/His-v3)
+  [![WhatsApp Channel](https://img.shields.io/badge/WhatsApp-Channel-25D366?style=flat&logo=whatsapp)](https://whatsapp.com/channel/0029Vb5u3VX0lwgllCdVTF0G)
   
-  **Advanced WhatsApp Bot inspired by Levanter**
+  **Simple**
   
   *"The thrill of the hunt begins..." - Hisoka*
 </div>
@@ -31,8 +31,8 @@
 
 1. **Clone the repository**
 \`\`\`bash
-git clone https://github.com/hhhisoka/his-md-v0.git
-cd his-md-v0
+git clone https://github.com/hhhisoka/His-v3.git
+cd His-v3
 \`\`\`
 
 2. **Install dependencies**
@@ -90,8 +90,8 @@ export default {
 
 ## 📞 Support
 
-- **WhatsApp Channel**: [Join Here](https://whatsapp.com/channel/0029VagQEmB002T7MWo3Sj1D)
-- **GitHub Issues**: [Report Bugs](https://github.com/hhhisoka/his-md-v0/issues)
+- **WhatsApp Channel**: [Join Here](https://whatsapp.com/channel/0029Vb5u3VX0lwgllCdVTF0G)
+- **GitHub Issues**: [Report Bugs](https://github.com/hhhisoka/His-v3/issues)
 
 ## 📄 License
 
@@ -99,8 +99,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🎭 Credits
 
-- Inspired by **Levanter** WhatsApp Bot
-- Built with **@whiskeysockets/baileys**
+ **@whiskeysockets/baileys**
 - Created by **Hisoka Team**
 
 ---
