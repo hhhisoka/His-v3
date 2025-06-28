@@ -1,113 +1,113 @@
 /**
- * 🃏 HISOKA-MD - WhatsApp Bot
- * Created with Bailey library
+ * ╔══════════════════════════════════════════════════════════════════════════════╗
+ * ║                            𝗥𝗔𝗩𝗘𝗡-𝗠𝗗 𝗕𝗢𝗧                                ║
+ * ║                    Powered by Raven-Hisoka Technology                       ║
+ * ╚══════════════════════════════════════════════════════════════════════════════╝
  */
 
-import {
-  makeWASocket,
-  DisconnectReason,
-  useMultiFileAuthState,
-  fetchLatestBaileysVersion,
-} from "@whiskeysockets/baileys"
-import pino from "pino"
-import chalk from "chalk"
-import { generatePairingCode, displaySessionSuccess, generateSessionId } from "./lib/auth.js"
-import { logger } from "./lib/logger.js"
-import { loadPlugins } from "./lib/plugins.js"
+const { connect } = require('./lib/connect');
+const { handler } = require('./lib/handler');
+const config = require('./config');
+const chalk = require('chalk');
+const readline = require('readline');
 
-const logger_pino = pino({ level: "silent" })
+console.clear();
 
-async function startHisokaMD() {
-  console.log(
-    chalk.magenta(`
-  ██╗  ██╗██╗███████╗ ██████╗ ██╗  ██╗ █████╗       ███╗   ███╗██████╗ 
-  ██║  ██║██║██╔════╝██╔═══██╗██║ ██╔╝██╔══██╗      ████╗ ████║██╔══██╗
-  ███████║██║███████╗██║   ██║█████╔╝ ███████║█████╗██╔████╔██║██║  ██║
-  ██╔══██║██║╚════██║██║   ██║██╔═██╗ ██╔══██║╚════╝██║╚██╔╝██║██║  ██║
-  ██║  ██║██║███████║╚██████╔╝██║  ██╗██║  ██║      ██║ ╚═╝ ██║██████╔╝
-  ╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝      ╚═╝     ╚═╝╚═════╝ 
-  `),
-  )
+// Raven-MD ASCII Art
+console.log(chalk.red.bold(`
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   ██████╗  █████╗ ██╗   ██╗███████╗███╗   ██╗      ███╗   ███╗██████╗        ║
+║   ██╔══██╗██╔══██╗██║   ██║██╔════╝████╗  ██║      ████╗ ████║██╔══██╗       ║
+║   ██████╔╝███████║██║   ██║█████╗  ██╔██╗ ██║█████╗██╔████╔██║██║  ██║       ║
+║   ██╔══██╗██╔══██║╚██╗ ██╔╝██╔══╝  ██║╚██╗██║╚════╝██║╚██╔╝██║██║  ██║       ║
+║   ██║  ██║██║  ██║ ╚████╔╝ ███████╗██║ ╚████║      ██║ ╚═╝ ██║██████╔╝       ║
+║   ╚═╝  ╚═╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝      ╚═╝     ╚═╝╚═════╝        ║
+║                                                                              ║
+║                        ${chalk.cyan('Hisoka-Inspired WhatsApp Bot')}                        ║
+║                            ${chalk.yellow('Version 1.0.0')}                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+`));
 
-  console.log(chalk.yellow("🃏 Starting HISOKA-MD Bot..."))
-  console.log(chalk.cyan("📱 Inspired by Levanter"))
-  console.log(chalk.magenta("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"))
+console.log(chalk.magenta.bold('🎭 Welcome to Raven-MD - The Hisoka-Inspired WhatsApp Bot'));
+console.log(chalk.gray('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
 
-  const { state, saveCreds } = await useMultiFileAuthState("./session")
-  const { version, isLatest } = await fetchLatestBaileysVersion()
+// Connection method selection
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-  logger.info(`Using WA v${version.join(".")}, isLatest: ${isLatest}`)
-
-  const sock = makeWASocket({
-    version,
-    logger: logger_pino,
-    printQRInTerminal: false,
-    auth: state,
-    browser: ["HISOKA-MD", "Chrome", "1.0.0"],
-    generateHighQualityLinkPreview: true,
-    defaultQueryTimeoutMs: 60000,
-  })
-
-  // Load plugins
-  await loadPlugins(sock)
-
-  if (!sock.authState.creds.registered) {
-    const phoneNumber = await generatePairingCode()
-    const code = await sock.requestPairingCode(phoneNumber)
-
-    console.log(chalk.magenta("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"))
-    console.log(chalk.yellow("           🔐 PAIRING CODE READY 🔐"))
-    console.log(chalk.magenta("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"))
-    console.log(chalk.green(`📱 Your Pairing Code: ${chalk.bold.yellow(code)}`))
-    console.log(chalk.cyan("📝 Enter this code in WhatsApp:"))
-    console.log(chalk.gray("   Settings > Linked Devices > Link a Device"))
-    console.log(chalk.magenta("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"))
-    console.log(chalk.green('🎭 "The anticipation is killing me..." - Hisoka'))
-    console.log(chalk.magenta("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"))
-  }
-
-  sock.ev.on("connection.update", (update) => {
-    const { connection, lastDisconnect } = update
-
-    if (connection === "close") {
-      const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
-
-      logger.info("Connection closed due to", lastDisconnect?.error, ", reconnecting", shouldReconnect)
-
-      if (shouldReconnect) {
-        startHisokaMD()
-      }
-    } else if (connection === "open") {
-      const sessionId = generateSessionId()
-      displaySessionSuccess(sessionId)
-
-      logger.hisoka("🃏 HISOKA-MD is now connected!")
-      console.log(chalk.green("✅ Bot is ready to serve!"))
-    }
-  })
-
-  sock.ev.on("creds.update", saveCreds)
-
-  // Handle messages
-  sock.ev.on("messages.upsert", async (m) => {
-    const message = m.messages[0]
-    if (!message.message || message.key.fromMe) return
-
-    const from = message.key.remoteJid
-    const messageType = Object.keys(message.message)[0]
-    const body = message.message.conversation || message.message.extendedTextMessage?.text || ""
-
-    logger.info(`Message from ${from}: ${body}`)
-
-    // Plugin system will handle commands
-    sock.emit("message", { message, from, body, messageType })
-  })
-
-  return sock
+function askConnectionMethod() {
+    return new Promise((resolve) => {
+        console.log(chalk.cyan('\n🔗 Choose your connection method:'));
+        console.log(chalk.white('1. QR Code (Scan with WhatsApp)'));
+        console.log(chalk.white('2. Pairing Code (Enter phone number)'));
+        
+        rl.question(chalk.yellow('\nEnter your choice (1 or 2): '), (answer) => {
+            if (answer === '1' || answer === '2') {
+                resolve(answer);
+            } else {
+                console.log(chalk.red('❌ Invalid choice. Please enter 1 or 2.'));
+                askConnectionMethod().then(resolve);
+            }
+        });
+    });
 }
 
+async function startBot() {
+    try {
+        console.log(chalk.blue('\n🚀 Starting Raven-MD Bot...'));
+        
+        let connectionMethod = 'qr';
+        
+        // Check command line arguments
+        if (process.argv.includes('--qr')) {
+            connectionMethod = 'qr';
+            console.log(chalk.green('📱 QR Code mode selected via command line'));
+        } else if (process.argv.includes('--pairing-code')) {
+            connectionMethod = 'pairing';
+            console.log(chalk.green('🔢 Pairing code mode selected via command line'));
+        } else {
+            // Interactive selection
+            const choice = await askConnectionMethod();
+            connectionMethod = choice === '1' ? 'qr' : 'pairing';
+        }
+        
+        rl.close();
+        
+        console.log(chalk.cyan('\n⚡ Initializing connection...'));
+        
+        // Start connection with selected method
+        const sock = await connect(connectionMethod);
+        
+        // Set up message handler
+        sock.ev.on('messages.upsert', async (messageUpdate) => {
+            await handler(sock, messageUpdate);
+        });
+        
+        console.log(chalk.green.bold('\n✅ Raven-MD Bot is now online!'));
+        console.log(chalk.gray('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
+        
+    } catch (error) {
+        console.error(chalk.red('❌ Error starting bot:'), error);
+        process.exit(1);
+    }
+}
+
+// Handle process termination
+process.on('SIGINT', () => {
+    console.log(chalk.yellow('\n👋 Raven-MD Bot shutting down...'));
+    process.exit(0);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error(chalk.red('❌ Uncaught Exception:'), error);
+});
+
+process.on('unhandledRejection', (error) => {
+    console.error(chalk.red('❌ Unhandled Rejection:'), error);
+});
+
 // Start the bot
-startHisokaMD().catch((err) => {
-  logger.error("Error starting HISOKA-MD:", err)
-  process.exit(1)
-})
+startBot();

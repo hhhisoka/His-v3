@@ -1,0 +1,36 @@
+modules = ["nodejs-20"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Raven-MD Bot"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "raven-md-bot"
+
+[[workflows.workflow]]
+name = "Raven-MD Bot"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install @whiskeysockets/baileys @hapi/boom chalk qrcode-terminal readline axios && node index.js --qr"
+
+[[workflows.workflow]]
+name = "raven-md-bot"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install @whiskeysockets/baileys @hapi/boom chalk qrcode-terminal axios readline && node index.js --qr"
